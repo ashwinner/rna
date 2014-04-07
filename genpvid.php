@@ -4,6 +4,11 @@
 
 <body>
 <script src='js/bin/jsencrypt.min.js'></script>
+<script src='js/jsbn/jsbn.js'></script>
+<script src='js/jsbn/jsbn2.js'></script>
+<script src='js/jsbn/rng.js'></script>
+<script src='js/jsbn/prng4.js'></script>
+
 <h2>Generate your PVID</h2>
 
 <?php 
@@ -36,9 +41,23 @@
         var crypt = new JSEncrypt();
         crypt.setKey(document.getElementsByName('publicKey')[0].value);
         var key = crypt.getKey();
-        var modulus = key.n;
-        alert(modulus);
+        var n = new BigInteger(key.n.toString());
+        var e = new BigInteger(key.e.toString());
+
+        var rng = new SecureRandom();
+
+        var blindingFactor;
+
+        do {
+            blindingFactor = new BigInteger(1024, rng);
+        } while(blindingFactor.compareTo(n)>=0 || blindingFactor.compareTo(BigInteger.ONE)<=0 || !blindingFactor.gcd(n).equals(BigInteger.ONE));
+
+        var numberToBlind = new BigInteger("1000" + new BigInteger(32, rng).toString());
+        var pseudoID = blindingFactor.modPow(e, n).multiply(numberToBlind).mod(n);
+        console.log(numberToBlind.toString());
+
+
 return true;
-}
+    }
 </script>
 
