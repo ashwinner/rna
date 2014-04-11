@@ -21,7 +21,7 @@
 	echo "<form name='authenticate' action='authorizer.php' method='post' onsubmit='return blind()'>
 	Email : <input type='text' name='email'>
 	<br/>
-	PIN : &nbsp;&nbsp;&nbsp;<input type='password' name='pass'>
+	PIN : &nbsp;&nbsp;&nbsp;<input type='password' name='pin'>
     <br/>
     
     <input type='hidden' name='pseudoID' value=''>
