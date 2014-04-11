@@ -44,7 +44,7 @@
     $signedPseudoID = $pseudoID->powMod($d, $n);
     
     $query = "insert into pvidList values ('{$signedPseudoID}');";
-    mysql_query($query) or die(mysql_error());
+    mysql_query($query) or die("Error here".mysql_error());
 
     $query = "update validate set generatedPVID='1' where userId='$userId';";
     mysql_query($query) or die (mysql_error());

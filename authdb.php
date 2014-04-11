@@ -1,5 +1,5 @@
 <?php
-    $dbhost = "localhost";
+    $dbhost = "athena.nitc.ac.in";
     $dbusername = "rna";
     $dbpassword = "rna";
     $dbname = "rna";
