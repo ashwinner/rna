@@ -7,12 +7,12 @@ include('Crypt/AES.php');
 	if(!isset($_POST['email']))
 	{ 
 		echo "Enter your email id before clicking on submit button";
-		header('location:genpin2.php');
+		header('location:genpin.php');
 	}
-	require 'collectordb_part1.php';
-	 $userId=$_POST['email'];
+	require 'db.php';
+	$userId=$_POST['email'];
 	
-	$query = "select pin2 from validate where email_id = '{$userId}'";//sql query should not end with semi colon
+	$query = "select pin from collectorValidate where userId = '{$userId}'";//sql query should not end with semi colon
 
 	$result = mysql_query($query) or die(mysql_error());
     $row = mysql_fetch_array($result);
@@ -20,16 +20,16 @@ include('Crypt/AES.php');
     if($row==NULL)
         echo "<h3>User Doesnt Exist!</h3>";
 
-    else if(!($row['pin2'])) //pin corresponding to the userId in the query is null
+    else if(!($row['pin'])) //pin corresponding to the userId in the query is null
 	{
-        	// generate_pin2() and mail it
+        	// generate_pin() and mail it
 		/*create a 4 digit random number*/
 		$digits = 4;
 		$pin=str_pad(rand(0, pow(10, $digits)-1), $digits, '0', STR_PAD_LEFT);
 		echo $pin;
 		
 		/*insert the new pin generated into db*/
-		$query1 = "update validate set pin2= '{$pin}' where email_id='{$userId}'";
+		$query1 = "update collectorValidate set pin= '{$pin}' where userId='{$userId}'";
 		mysql_query($query1) or die(mysql_error());
 		
 		/*email the generated pin to the emailID*/
@@ -38,7 +38,7 @@ include('Crypt/AES.php');
 		$recipients = $userId;
 		$headers["From"] = "niksmd92@gmail.com";
 		$headers["To"] = $userId;
-		$headers["Subject"] = "pin2";
+		$headers["Subject"] = "pin";
 		$mailmsg = $pin;
 		require 'sendEmail.php';
 		/* Create the mail object using the Mail::factory method */
@@ -49,8 +49,8 @@ include('Crypt/AES.php');
 		
 	}
     
-    else if($row['pin2'])
-        echo "<h3>You already have a pin2 generated earlier...Check your inbox</h3>";
+    else if($row['pin'])
+        echo "<h3>You already have a pin generated earlier...Check your inbox</h3>";
 
 
 //encrypt vote using aes encryption

@@ -7,10 +7,10 @@
 <h2>Confirm to Vote</h2>
 
 <?php 
-    require('collectordb.php');
+    require('db.php');
     $userId=$_POST['email'];
     $pin=$_POST['pin'];
-    $query= "select * from validate where userId= '{$userId}' ;";
+    $query= "select * from collectorValidate where userId= '{$userId}' ;";
     $result = mysql_query($query) or die(mysql_error());
     $row = mysql_fetch_array($result);
 

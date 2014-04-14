@@ -8,7 +8,7 @@
         header('location:vote.html');
     }
 
-    require 'keyGeneratordb.php';
+    require 'db.php';
     require 'Math/BigInteger.php';
     $PVID=new Math_BigInteger($_POST['pvid'],10);
 
@@ -27,7 +27,7 @@
 	}
 	
 	//if valid PVID
-    $query = "select * from table_of_keys where pvid = '{$PVID}' ;";
+    $query = "select * from keys where pvid = '{$PVID}' ;";
     $result = mysql_query($query) or die(mysql_error());
     $row = mysql_fetch_array($result);
 
@@ -38,8 +38,8 @@
 		echo $key;
 		$key1 = new Math_BigInteger($key, 256); 
 		echo $key1;		
-		//insert into table_of_keys
-		$query = "insert into table_of_keys values ('{$PVID}','{$key1->toString()}');";
+		//insert into keys
+		$query = "insert into keys values ('{$PVID}','{$key1->toString()}');";
 		mysql_query($query) or die("Error here".mysql_error());
 		
 	}

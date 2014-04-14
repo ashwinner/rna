@@ -60,18 +60,18 @@
 					$query2 = "update PvidToEncryptedVote set EncryptedVote='{$encryptedVoteString}' where PVID='$PVIDstring';";
     					mysql_query($query2) or die (mysql_error());
 				}
-				$query = "select * from PvidToHashOfEncryptedVote where PVID = '{$PVIDstring}' ;";
+				$query = "select * from cbb where PVID = '{$PVIDstring}' ;";
 				$result = mysql_query($query) or die(mysql_error());
     				$row = mysql_fetch_array($result);
 
     				if($row==NULL)
 				{
-       					$query1 = "insert into PvidToHashOfEncryptedVote values ('{$PVIDstring}','{$hashOfEncryptedVote}');";
+       					$query1 = "insert into cbb values ('{$PVIDstring}','{$hashOfEncryptedVote}');";
 					mysql_query($query1) or die("Error here".mysql_error());
 				}
 				else
 				{
-					$query2 = "update PvidToHashOfEncryptedVote set HashOfEncryptedVote='{$hashOfEncryptedVote}' where PVID='$PVIDstring';";
+					$query2 = "update cbb set HashOfEncryptedVote='{$hashOfEncryptedVote}' where PVID='$PVIDstring';";
     					mysql_query($query2) or die (mysql_error());
 				}
 
