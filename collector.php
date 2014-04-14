@@ -47,12 +47,11 @@
 		  <br/>
 		  
 		  ";
-	    echo "<form name='authenticate' action='collectorOfVote.php' method='post' onsubmit ='return unblind()'  >
+	    echo "<form id='collectionOfVote' action='collectorOfVote.php' method='post'   >
 		  <input type='hidden' name='collectorAuthenticatedVote' value=''>
 		  <input type='hidden' name='collectorAuthenticatedPVID' value=''>
 		  <input type='hidden' name='PVID' value=''>
 		  <input type='hidden' name='encryptedVote' value=''>
-		  <input type= 'submit' value= 'Proceed to Vote' >
 		  </form>
 		  ";
   	}
@@ -92,6 +91,7 @@
      document.getElementsByName('collectorAuthenticatedPVID')[0].value=collectorAuthenticatedPVID;
      document.getElementsByName('PVID')[0].value=PVID;
      document.getElementsByName('encryptedVote')[0].value=encryptedVote;
+     document.getElementById("collectionOfVote").submit();
      //alert(signedPVID);
      return true;
     }
