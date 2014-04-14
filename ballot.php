@@ -23,7 +23,7 @@
 	<br/>
 	PIN : &nbsp;&nbsp;&nbsp;<input type='password' name='pin'>
     	<br/>
-	PVID: <input type= 'text' name= 'blindedPVID'>
+	<input type= 'hidden' name= 'blindedPVID'>
     	<br/>
     	<br/>
     	Candidate: <input type='text' name='blindedEncryptedVote'>
@@ -44,8 +44,8 @@
         
         var n = new BigInteger(document.getElementsByName('n')[0].value);
         var e = new BigInteger(document.getElementsByName('e')[0].value);
-	var PVID= new BigInteger(document.getElementsByName('blindedPVID')[0].value);
-	localStorage.setItem('PVID', PVID.toString());
+	var PVID=new BigInteger(localStorage.getItem('PVID'));
+	
         var rng = new SecureRandom();
 
         var blindingFactor;
