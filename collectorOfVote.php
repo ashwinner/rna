@@ -4,7 +4,7 @@
 <h2>Vote Casted Confirmation</h2>
 <?php
 	require('Math/BigInteger.php');
-	require('collectordb.php');
+	require('db.php');
 	require('Crypt/Hash.php');
 	$collectorKey=openssl_pkey_get_details(openssl_pkey_get_private(file_get_contents('collectorKey.pem')));
     

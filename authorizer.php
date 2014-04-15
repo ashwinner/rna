@@ -12,7 +12,7 @@
         header('location:index.html');
     }
 
-    require('authdb.php');
+    require('db.php');
 
     $userId=$_POST['email'];
     $pin = $_POST['pin'];

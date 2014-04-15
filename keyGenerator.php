@@ -27,7 +27,7 @@
 	}
 	
 	//if valid PVID
-    $query = "select * from keys where pvid = '{$PVID}' ;";
+    $query = "select * from symmetricKeys where pvid = '{$PVID}' ;";
     $result = mysql_query($query) or die(mysql_error());
     $row = mysql_fetch_array($result);
 
@@ -39,7 +39,7 @@
 		$key1 = new Math_BigInteger($key, 256); 
 		echo $key1;		
 		//insert into keys
-		$query = "insert into keys values ('{$PVID}','{$key1->toString()}');";
+		$query = "insert into symmetricKeys values ('{$PVID}','{$key1->toString()}');";
 		mysql_query($query) or die("Error here".mysql_error());
 		
 	}
@@ -54,17 +54,13 @@
 
 ?>
 <button type="button"  onclick="document.location.href='ballot.php';">Display Ballot</button> 
+</body>
+</html>
 <script>
-	window.onload = function storeKey() {
-	{
+function storeKey() {
+	
 		var key= new BigInteger(document.getElementsByName('key')[0].value);
 		localStorage.setItem('key', key.toString());	
 	}
 
-	function alertBox()
-	{
-		alert("Invalid PVID\n");
-	}
 </script>
-</body>
-</html>

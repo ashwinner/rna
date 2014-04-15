@@ -64,7 +64,7 @@
 </html>
 
 <script>
-   function unblind() {
+window.onload = function unblind() {
         
      n = new BigInteger(document.getElementsByName('n')[0].value);
      
