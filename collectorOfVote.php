@@ -20,29 +20,41 @@
 	
 	$collectorAuthenticatedVote=new Math_BigInteger($_POST['collectorAuthenticatedVote'],10);
 	$collectorAuthenticatedPVID=new Math_BigInteger($_POST['collectorAuthenticatedPVID'],10);
-	$PVID=new Math_BigInteger($_POST['PVID'],10);
-	$encryptedVote=new Math_BigInteger($_POST['encryptedVote'],10);
-	$calculatedPVID= ($collectorAuthenticatedPVID->powMod($e_c, $n_c));
-	$calculatedEncryptedVote=($collectorAuthenticatedVote->powMod($e_c, $n_c));
-	$PVIDstring= $PVID->toString();
-	$encryptedVoteString=$encryptedVote->toString();
+	$PVIDprefixed= ($collectorAuthenticatedPVID->powMod($e_c, $n_c));
+	$encryptedVotePrefixed=($collectorAuthenticatedVote->powMod($e_c, $n_c));
+
+
+//	$PVIDstring= $PVID->toString();
+//	$encryptedVoteString=$encryptedVote->toString();
 	$hash= new Crypt_Hash('sha512');
-	$hashOfEncryptedVote= bin2hex($hash->hash($encryptedVoteString));
+//	$hashOfEncryptedVote= bin2hex($hash->hash($encryptedVoteString));
 	
 	
-	if(($PVID->compare($calculatedPVID))==0)
+/*	if(($PVID->compare($calculatedPVID))==0)
 	{
 		//echo "Both Pvids equal\n";
 	
 		$decryptedPVID= $PVID->powMod($e_a,$n_a);
 		$checkPVID= $decryptedPVID->toString();
 	
-		
+*/
+	$PVIDprefixedString=$PVIDprefixed->toString();
+	$encryptedVotePrefixedString=$encryptedVotePrefixed->toString();
+	var_dump($PVIDprefixedString);
+	var_dump($encryptedVotePrefixedString);
+	if((substr($PVIDprefixedString,0,4)==='1100')&&(substr($encryptedVotePrefixedString,0,4)==='1110'))
+	{
+		$PVIDstring=substr($PVIDprefixedString,4);
+		$encryptedVoteString=substr($encryptedVotePrefixedString,4);
+		$PVID=new Math_BigInteger($PVIDstring,256);
+		$decryptedPVID= $PVID->powMod($e_a,$n_a);
+		$checkPVID= $decryptedPVID->toString();
+	
 		if(substr($checkPVID,0,4)==='1000')
 		{
 			//echo "Valid PVID\n";
-			if(($encryptedVote->compare($calculatedEncryptedVote))==0)
-			{
+	//		if(($encryptedVote->compare($calculatedEncryptedVote))==0)
+	//		{
 				
 				//echo "Both encrypted votes same\n";
 				//echo "Now add to database and bullettin board\n";
@@ -76,11 +88,11 @@
 				}
 
 				
-			}
+	/*		}
 			else
 			{
 				echo "encrypted Votes not same\n";
-			}
+			}*/
 		}
 		else
 		{
@@ -89,7 +101,7 @@
 	}
 	else
 	{
-		echo "PVIDs not equal\n";
+		echo "Not Collector Signed\n";
 	}
 	
 ?>

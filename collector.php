@@ -50,8 +50,6 @@
 	    echo "<form id='collectionOfVote' action='collectorOfVote.php' method='post'   >
 		  <input type='hidden' name='collectorAuthenticatedVote' value=''>
 		  <input type='hidden' name='collectorAuthenticatedPVID' value=''>
-		  <input type='hidden' name='PVID' value=''>
-		  <input type='hidden' name='encryptedVote' value=''>
 		  </form>
 		  ";
   	}
@@ -89,8 +87,7 @@ window.onload = function unblind() {
      
      document.getElementsByName('collectorAuthenticatedVote')[0].value=collectorAuthenticatedVote;
      document.getElementsByName('collectorAuthenticatedPVID')[0].value=collectorAuthenticatedPVID;
-     document.getElementsByName('PVID')[0].value=PVID;
-     document.getElementsByName('encryptedVote')[0].value=encryptedVote;
+    
      document.getElementById("collectionOfVote").submit();
      //alert(signedPVID);
      return true;
