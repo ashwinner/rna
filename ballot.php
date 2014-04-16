@@ -74,5 +74,9 @@
 return true;
     }
 
+window.onload = function clearVote() {
+	document.getElementsByName('blindedEncryptedVote')[0].value="";
+	}
+
 </script>
 
