@@ -4,6 +4,7 @@
 <script src='js/jsbn/jsbn2.js'></script>
 <script src='js/jsbn/rng.js'></script>
 <script src='js/jsbn/prng4.js'></script>
+<script src='aes.js'></script>
 <html>
 
 <body>
@@ -50,7 +51,9 @@
 	var PVIDprefixed= new BigInteger("1110" + PVID.toString());
 	//var PVIDprefixed=PVID;
 	var key= localStorage.getItem('key');
-	console.log("key :" +key);	
+	console.log("key :" +key);
+	//encrypt the vote using AES
+		
         var rng = new SecureRandom();
 
         var blindingFactor;
@@ -62,7 +65,9 @@
         localStorage.setItem('blindingFactorCollector', blindingFactor.toString());
         
         var vote = new BigInteger(document.getElementsByName('blindedEncryptedVote')[0].value);
-	var encryptedVote= vote;
+	var encryptedVote= CryptoJS.AES.encrypt(vote.toString(),key);
+	console.log("vote is = "+vote);
+	console.log("encrypted vote is ="+encrypted vote);
 //	localStorage.setItem('encryptedVote', encryptedVote.toString());
 	var encryptedVotePrefixed= new BigInteger("1110" + encryptedVote.toString());	 
         //console.log("Vote : " + vote);
@@ -84,4 +89,4 @@ window.onload = function clearVote() {
 	}
 
 </script>
-
+	
