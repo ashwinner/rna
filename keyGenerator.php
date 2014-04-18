@@ -20,13 +20,13 @@
     	$e_a = new Math_BigInteger($key['rsa']['e'], 256);
 	$decryptedPVID= $PVID->powMod($e_a,$n_a);
 	$checkPVID= $decryptedPVID->toString();
-	if(substr($checkPVID,0,4)==='1000')
-		echo "Valid PVID\n";	
-	else 
+	if(!substr($checkPVID,0,4)==='1000') 
 	{
 		//echo '<script type="text/javascript">', 'alertBox();', '</script>';
 		echo "<h3> The PVID you entered is invalid!</h3>";
 	}
+	else
+	{
 	
 	//if valid PVID
     $query = "select * from symmetricKeys where pvid = '{$PVID}' ;";
@@ -53,7 +53,7 @@
 	 
 	 echo "<input type='hidden' name='key' value='$key'>
           <br/>";
-
+	}
 ?>
 <script>
 window.onload = function storeKey() {
