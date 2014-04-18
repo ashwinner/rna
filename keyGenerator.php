@@ -20,20 +20,22 @@
     	$e_a = new Math_BigInteger($key['rsa']['e'], 256);
 	$decryptedPVID= $PVID->powMod($e_a,$n_a);
 	$checkPVID= $decryptedPVID->toString();
-	if(!substr($checkPVID,0,4)==='1000') 
+	//var_dump($checkPVID);
+	if(!(substr($checkPVID,0,4)=='1000')) 
 	{
 		//echo '<script type="text/javascript">', 'alertBox();', '</script>';
 		echo "<h3> The PVID you entered is invalid!</h3>";
 	}
+	
 	else
 	{
 	
 	//if valid PVID
-    $query = "select * from symmetricKeys where pvid = '{$PVID}' ;";
-    $result = mysql_query($query) or die(mysql_error());
-    $row = mysql_fetch_array($result);
+    	$query = "select * from symmetricKeys where pvid = '{$PVID}' ;";
+    	$result = mysql_query($query) or die(mysql_error());
+    	$row = mysql_fetch_array($result);
 
-    if($row==NULL)	//the valid PVID has to be added to the keyGenerator's database and a symmetric key pair has to be generated
+    	if($row==NULL)	//the valid PVID has to be added to the keyGenerator's database and a symmetric key pair has to be generated
 	{
 		echo "<h3> generating key pair for voter!</h3>";
 		$key=openssl_random_pseudo_bytes(16);//returns a random string of 16 bytes
@@ -45,7 +47,7 @@
 		mysql_query($query) or die("Error here".mysql_error());
 		
 	}
-    else			//pvid and key already present in table, so just return the key
+    	else			//pvid and key already present in table, so just return the key
 	{
 		$key=$row['key'];
 	}
