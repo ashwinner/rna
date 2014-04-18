@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<script src='js/jsbn/jsbn.js'></script>
+<script src='js/jsbn/jsbn2.js'></script>
 <html>
 <body>
 <?php 
@@ -23,7 +25,7 @@
 	else 
 	{
 		//echo '<script type="text/javascript">', 'alertBox();', '</script>';
-		header('location:vote.html');
+		echo "<h3> The PVID you entered is invalid!</h3>";
 	}
 	
 	//if valid PVID
@@ -53,14 +55,14 @@
           <br/>";
 
 ?>
-<button type="button"  onclick="document.location.href='ballot.php';">Display Ballot</button> 
-</body>
-</html>
 <script>
-function storeKey() {
+window.onload = function storeKey() {
 	
 		var key= new BigInteger(document.getElementsByName('key')[0].value);
-		localStorage.setItem('key', key.toString());	
+		localStorage.setItem('key', key.toString());
+		document.location.href='ballot.php';	
 	}
 
 </script>
+</body>
+</html>
