@@ -1,6 +1,4 @@
 <!DOCTYPE html>
-<script src='js/jsbn/jsbn.js'></script>
-<script src='js/jsbn/jsbn2.js'></script>
 <html>
 <body>
 <?php 
@@ -39,29 +37,28 @@
 	{
 		echo "<h3> generating key pair for voter!</h3>";
 		$key=openssl_random_pseudo_bytes(16);//returns a random string of 16 bytes
-		echo $key;
-		$key1 = new Math_BigInteger($key, 256); 
-		echo $key1;		
+		
+		$key_base64 = base64_encode($key);
 		//insert into keys
-		$query = "insert into symmetricKeys values ('{$PVID}','{$key1->toString()}');";
+		$query = "insert into symmetricKeys values ('{$PVID}','$key_base64');";
 		mysql_query($query) or die("Error here".mysql_error());
 		
 	}
     	else			//pvid and key already present in table, so just return the key
 	{
-		$key=$row['key'];
+		$key_base64=$row['key_base64'];
 	}
 	
 	 
-	 echo "<input type='hidden' name='key' value='$key'>
+	 echo "<input type='hidden' name='key_base64' value='$key_base64'>
           <br/>";
 	}
 ?>
 <script>
 window.onload = function storeKey() {
 	
-		var key= new BigInteger(document.getElementsByName('key')[0].value);
-		localStorage.setItem('key', key.toString());
+		var key= document.getElementsByName('key_base64')[0].value;
+		localStorage.setItem('key_base64', key);
 		document.location.href='ballot.php';	
 	}
 
