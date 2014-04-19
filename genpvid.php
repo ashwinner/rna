@@ -4,6 +4,7 @@
 <script src='js/jsbn/jsbn2.js'></script>
 <script src='js/jsbn/rng.js'></script>
 <script src='js/jsbn/prng4.js'></script>
+<script src='js/bin/jsencrypt.min.js'></script>
 <html>
 
 <body>
@@ -14,7 +15,7 @@
     
     include_once('Math/BigInteger.php');
     $key=openssl_pkey_get_details(openssl_pkey_get_private(file_get_contents('key.pem')));
-    
+	$publicKey = file_get_contents('authpub.pem');    
     $n = new Math_BigInteger($key['rsa']['n'], 256);
     $e = new Math_BigInteger($key['rsa']['e'], 256);
 
@@ -27,6 +28,7 @@
     <input type='hidden' name='pseudoID' value=''>
     <input type='hidden' name='n' value='$n'>
     <input type='hidden' name='e' value='$e'>
+	<input type='hidden' name='publicKey' value='$publicKey'>
 	<input type='submit' value='submit'>
 	</form>
 	";
@@ -41,8 +43,13 @@
         
         var n = new BigInteger(document.getElementsByName('n')[0].value);
         var e = new BigInteger(document.getElementsByName('e')[0].value);
+	var publicKey = document.getElementsByName('publicKey')[0].value;
+	var email = document.getElementsByName('email')[0].value;
+        
+	var crypt = new JSEncrypt();
+	crypt.setKey(publicKey);
 
-        var rng = new SecureRandom();
+	var rng = new SecureRandom();
 
         var blindingFactor;
 
@@ -58,8 +65,10 @@
         var pseudoID = blindingFactor.modPow(e, n).multiply(numberToBlind).mod(n);
         console.log("pseudoID : " + pseudoID);
         document.getElementsByName('pseudoID')[0].value=pseudoID;
-
-        //alert(n);
+	
+	var enc = crypt.encrypt(email);
+	document.getElementsByName('email')[0].value=enc;
+        alert(enc);
 
 return true;
     }

@@ -15,6 +15,8 @@
     require('db.php');
 
     $userId=$_POST['email'];
+	openssl_private_decrypt(base64_decode($userId), &$decrypted, 'file://key.pem');
+	var_dump($decrypted);
     $pin = $_POST['pin'];
 
     $query = "select * from validate where userId = '{$userId}' ;";
