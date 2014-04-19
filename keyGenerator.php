@@ -10,8 +10,12 @@
 
     require 'db.php';
     require 'Math/BigInteger.php';
-    $PVID=new Math_BigInteger($_POST['pvid'],10);
+   	$key=openssl_pkey_get_details(openssl_pkey_get_private(file_get_contents('keyGenerator.pem')));
+        $n_k = new Math_BigInteger($key['rsa']['n'], 256);
+        $d_k = new Math_BigInteger($key['rsa']['d'], 256);
 
+	$encryptedPVID=new Math_BigInteger($_POST['pvid'],10);
+	$PVID=$encryptedPVID->powMod($d_k,$n_k);
     //verify if the PVID has got the authorizer's sign
 	$key=openssl_pkey_get_details(openssl_pkey_get_private(file_get_contents('key.pem')));    
     	$n_a = new Math_BigInteger($key['rsa']['n'], 256);

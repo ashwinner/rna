@@ -8,8 +8,14 @@
 
 <?php 
     require('db.php');
-    $userId=$_POST['email'];
-    $pin=$_POST['pin'];
+    $encryptedUserId=$_POST['email'];
+        openssl_private_decrypt(base64_decode($encryptedUserId), &$userId, 'file://collectorKey.pem');
+
+    $encryptedPin = $_POST['pin'];
+        openssl_private_decrypt(base64_decode($encryptedPin), &$pin, 'file://collectorKey.pem');
+    
+	var_dump($userId);
+	var_dump($pin);    
     $query= "select * from collectorValidate where userId= '{$userId}' ;";
     $result = mysql_query($query) or die(mysql_error());
     $row = mysql_fetch_array($result);
@@ -28,11 +34,12 @@
 	    $n_c = new Math_BigInteger($collectorKey['rsa']['n'], 256);
 	    $e_c = new Math_BigInteger($collectorKey['rsa']['e'], 256);
 
-	    $blindedEncryptedVote = new Math_BigInteger($_POST['blindedEncryptedVote'], 10);
-	    $blindedPVID = new Math_BigInteger($_POST['blindedPVID'], 10);
+	    $encryptedBlindedEncryptedVote = new Math_BigInteger($_POST['blindedEncryptedVote'], 10);
+	    $encryptedBlindedPVID = new Math_BigInteger($_POST['blindedPVID'], 10);
 	    //echo "blindedPVID : "+ $blindedPVID->toString();
-	    
+	    $blindedEncryptedVote=$encryptedBlindedEncryptedVote->powMod($d_c,$n_c);
 	    $signedBlindedEncryptedVote = $blindedEncryptedVote->powMod($d_c, $n_c);
+	    $blindedPVID=$encryptedBlindedPVID->powMod($d_c,$n_c);
 	    $signedBlindedPVID = $blindedPVID->powMod($d_c, $n_c);  
 	   // echo "signedBlindedPVID : "+ $signedBlindedPVID->toString();
 	    
@@ -44,6 +51,7 @@
 		  <input type='hidden' name='signedBlindedPVID' value='$signedBlindedPVID'>
 		  <br/>
 		  <input type='hidden' name='n' value='$n_c'>
+		  <input type='hidden' name='e' value='$e_c'>
 		  <br/>
 		  
 		  ";
@@ -65,6 +73,7 @@
 window.onload = function unblind() {
         
      n = new BigInteger(document.getElementsByName('n')[0].value);
+     e = new BigInteger(document.getElementsByName('e')[0].value);
      
      signedBlindedEncryptedVote = new BigInteger(document.getElementsByName('signedBlindedEncryptedVote')[0].value);
      signedBlindedPVID= new BigInteger(document.getElementsByName('signedBlindedPVID')[0].value);
@@ -85,8 +94,8 @@ window.onload = function unblind() {
      //console.log("collectorAuthenticatedVote " + collectorAuthenticatedVote);
     // console.log("collectorAuthenticatedPVID " + collectorAuthenticatedPVID);
      
-     document.getElementsByName('collectorAuthenticatedVote')[0].value=collectorAuthenticatedVote;
-     document.getElementsByName('collectorAuthenticatedPVID')[0].value=collectorAuthenticatedPVID;
+     document.getElementsByName('collectorAuthenticatedVote')[0].value=collectorAuthenticatedVote.modPow(e,n);
+     document.getElementsByName('collectorAuthenticatedPVID')[0].value=collectorAuthenticatedPVID.modPow(e,n);
     
      document.getElementById("collectionOfVote").submit();
      //alert(signedPVID);

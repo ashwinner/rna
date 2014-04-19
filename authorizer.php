@@ -14,11 +14,14 @@
 
     require('db.php');
 
-    $userId=$_POST['email'];
-	openssl_private_decrypt(base64_decode($userId), &$decrypted, 'file://key.pem');
-	var_dump($decrypted);
-    $pin = $_POST['pin'];
+    $encryptedUserId=$_POST['email'];
+	openssl_private_decrypt(base64_decode($encryptedUserId), &$userId, 'file://key.pem');
+	var_dump($userId);
 
+    $encryptedPin = $_POST['pin'];
+	openssl_private_decrypt(base64_decode($encryptedPin), &$pin, 'file://key.pem');
+
+	var_dump($pin);
     $query = "select * from validate where userId = '{$userId}' ;";
     
     $result = mysql_query($query) or die(mysql_error());
@@ -40,8 +43,9 @@
     $d = new Math_BigInteger($key['rsa']['d'], 256);
     $n = new Math_BigInteger($key['rsa']['n'], 256);
     $e = new Math_BigInteger($key['rsa']['e'], 256);
-
-    $pseudoID = new Math_BigInteger($_POST['pseudoID'], 10);
+    $encryptedPseudoID=new Math_BigInteger($_POST['pseudoID']);
+//    openssl_private_decrypt(base64_decode($encryptedPseudoID), &$pseudoIDstr, 'file://key.pem');
+    $pseudoID = $encryptedPseudoID->powMod($d,$n);
 
     $signedPseudoID = $pseudoID->powMod($d, $n);
     

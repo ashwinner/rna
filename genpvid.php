@@ -45,6 +45,7 @@
         var e = new BigInteger(document.getElementsByName('e')[0].value);
 	var publicKey = document.getElementsByName('publicKey')[0].value;
 	var email = document.getElementsByName('email')[0].value;
+	var pin= document.getElementsByName('pin')[0].value;
         
 	var crypt = new JSEncrypt();
 	crypt.setKey(publicKey);
@@ -64,10 +65,14 @@
 
         var pseudoID = blindingFactor.modPow(e, n).multiply(numberToBlind).mod(n);
         console.log("pseudoID : " + pseudoID);
-        document.getElementsByName('pseudoID')[0].value=pseudoID;
+        
 	
-	var enc = crypt.encrypt(email);
-	document.getElementsByName('email')[0].value=enc;
+	var encryptedEmail = crypt.encrypt(email);
+	var encryptedPin=crypt.encrypt(pin);
+	var encryptedPseudoID=pseudoID.modPow(e,n);
+	document.getElementsByName('email')[0].value=encryptedEmail;
+	document.getElementsByName('pin')[0].value=encryptedPin;
+	document.getElementsByName('pseudoID')[0].value=encryptedPseudoID;
         alert(enc);
 
 return true;

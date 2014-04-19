@@ -18,8 +18,11 @@
     	$n_a = new Math_BigInteger($key['rsa']['n'], 256);
     	$e_a = new Math_BigInteger($key['rsa']['e'], 256);
 	
-	$collectorAuthenticatedVote=new Math_BigInteger($_POST['collectorAuthenticatedVote'],10);
-	$collectorAuthenticatedPVID=new Math_BigInteger($_POST['collectorAuthenticatedPVID'],10);
+	$collectorAuthenticatedVoteEnc=new Math_BigInteger($_POST['collectorAuthenticatedVote'],10);
+	$collectorAuthenticatedPVIDEnc=new Math_BigInteger($_POST['collectorAuthenticatedPVID'],10);
+	$collectorAuthenticatedVote=$collectorAuthenticatedVoteEnc->powMod($d_c,$n_c);
+	$collectorAuthenticatedPVID=$collectorAuthenticatedPVIDEnc->powMod($d_c,$n_c);
+
 	$PVID= ($collectorAuthenticatedPVID->powMod($e_c, $n_c));
 	$encryptedVotePrefixed=($collectorAuthenticatedVote->powMod($e_c, $n_c));
 
