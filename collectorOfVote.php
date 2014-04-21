@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <body>
-<h2>Vote Casted Confirmation</h2>
+<h2>Vote Cast Confirmation</h2>
 <?php
 	require('Math/BigInteger.php');
 	require('db.php');
@@ -109,5 +109,8 @@
 	}
 	
 ?>
+	<br/>
+	<a href='index.html'>Click here to go back to the home page</a>
+	<br/>
 </body>
 </html>

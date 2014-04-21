@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-
+<html>
+<body>
 
 <?php 
 include('Crypt/AES.php');
@@ -51,12 +52,10 @@ include('Crypt/AES.php');
     
     else if($row['pin'])
         echo "<h3>You already have a pin generated earlier...Check your inbox</h3>";
-
-
-//encrypt vote using aes encryption
-/*
-$aes = new Crypt_AES();
-$aes->setKey('abcdefghijklmnop');
-
-*/
 ?>
+
+	<br/>
+	<a href='index.html'>Click here to go back to the home page</a>
+	<br/>
+</body>
+</html>

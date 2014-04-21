@@ -19,7 +19,7 @@
     $n = new Math_BigInteger($key['rsa']['n'], 256);
     $e = new Math_BigInteger($key['rsa']['e'], 256);
 
-	echo "<form name='authenticate' action='authorizer.php' method='post' onsubmit='return blind()'>
+	echo "<form name='authenticate' action='authorizer.php' method='post' autocomplete='off' onsubmit='return blind()'>
 	Email : <input type='text' name='email'>
 	<br/>
 	PIN : &nbsp;&nbsp;&nbsp;<input type='password' name='pin'>
@@ -41,6 +41,11 @@
 <script>
     function blind() {
         
+	if(!validForm()) {
+		alert("Please complete the form before submitting");
+		return false;
+	}
+
         var n = new BigInteger(document.getElementsByName('n')[0].value);
         var e = new BigInteger(document.getElementsByName('e')[0].value);
 	var publicKey = document.getElementsByName('publicKey')[0].value;
@@ -73,10 +78,14 @@
 	document.getElementsByName('email')[0].value=encryptedEmail;
 	document.getElementsByName('pin')[0].value=encryptedPin;
 	document.getElementsByName('pseudoID')[0].value=encryptedPseudoID;
-        alert(enc);
 
 return true;
     }
+	function validForm() {
+	if(document.getElementsByName('email')[0].value=='' || document.getElementsByName('pin')[0].value=='')
+		return false;
+	return true;
+	}
 
 </script>
 

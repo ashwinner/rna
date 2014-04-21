@@ -10,7 +10,7 @@ require('db.php');
 require('Math/BigInteger.php');
 
 if(!isset($_POST['pvid']) && !isset($_POST['key'])) {
-    echo "<form name='verify' action='verify.php' method='post'>
+    echo "<form name='verify' action='verify.php' autocomplete='off' method='post'>
     PVID : <input type='text' name='pvid'>
     <input type='submit' value='Fetch Key'>
     </form>";
@@ -26,7 +26,7 @@ else {
         $checkPVID= $decryptedPVID->toString();
         if(!(substr($checkPVID,0,4)=='1000'))
         {
-		echo "<form name='verify' action='verify.php' method='post'>
+		echo "<form name='verify' action='verify.php' autocomplete='off' method='post'>
         	PVID : <input type='text' name='pvid'>
 	        <input type='submit' value='Fetch Key'>
 	        </form>";
@@ -49,7 +49,7 @@ else {
 
 		 $key_base64 = $row['key_base64'];
 		 $iv_base64 = base64_encode(pack('H*', '48656c6c6f2c20576f726c6421abcdef'));
-    		    echo "<form name='verify' action='verifyResult.php' method='post' onsubmit=' return encrypt()'>
+    		    echo "<form name='verify' action='verifyResult.php' method='post' autocomplete='off' onsubmit=' return encrypt()'>
     		    PVID : <input type='text' name='pvid' value='$pvid'>
     		    <br/>
       		    Key &nbsp;&nbsp; : <input type='text' name='key' value='$key_base64'>

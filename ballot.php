@@ -22,7 +22,7 @@
 
     $iv_base64 = base64_encode(pack('H*', '48656c6c6f2c20576f726c6421abcdef'));
 
-	echo "<form name='authenticate' action='collector.php' method='post' onsubmit='return EncryptAndBlind()'>
+	echo "<form name='authenticate' action='collector.php' method='post' autocomplete='off' onsubmit='return EncryptAndBlind()'>
 	Email : <input type='text' name='email'>
 	<br/>
 	PIN : &nbsp;&nbsp;&nbsp;<input type='password' name='pin'>

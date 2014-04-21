@@ -16,14 +16,11 @@
 
     $encryptedUserId=$_POST['email'];
 	openssl_private_decrypt(base64_decode($encryptedUserId), &$userId, 'file://key.pem');
-	var_dump($userId);
 
     $encryptedPin = $_POST['pin'];
 	openssl_private_decrypt(base64_decode($encryptedPin), &$pin, 'file://key.pem');
 
-	var_dump($pin);
     $query = "select * from validate where userId = '{$userId}' ;";
-    
     $result = mysql_query($query) or die(mysql_error());
     $row = mysql_fetch_array($result);
 
@@ -58,16 +55,24 @@
           <br/>
           ";
     }
+	
+	echo "<a href='index.html'>Click here to go back to the home page</a>";
 
 ?>
 
           <h4 id='PVID'></h4>
+		<br/>
+	  <a id='download'></a>
+		<br/>
 </body>
 </html>
 
     <script>
     window.onload = function unblind() {
-        
+    
+	if(document.getElementsByName('n')[0]==null)
+		return false;
+    
         n = new BigInteger(document.getElementsByName('n')[0].value);
         signedPseudoID = new BigInteger(document.getElementsByName('signedPseudoID')[0].value);
 
@@ -76,7 +81,12 @@
         
         PVID = blindingFactor.modInverse(n).multiply(signedPseudoID).mod(n);
         document.getElementById('PVID').innerHTML=PVID;
-        return true;
-    }
+
+    var download = document.getElementById('download');
+	download.innerHTML="Click here to download";
+    download.href='data:Application/octet-stream;base64,' + btoa(PVID);
+	download.download='pvid.txt';
+
+}
 
     </script>

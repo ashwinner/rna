@@ -2,6 +2,8 @@
 <html>
 <body>
 
+<h1>Vote Verification</h4>
+
 <?php
 	require('Crypt/Hash.php');
 	require('db.php');
@@ -45,6 +47,9 @@
 	}
 ?>
 
+	<br/>
+	<a href='index.html'>Click here to go back to the home page</a>
+	<br/>
 </body>
 </html>
 
